@@ -1,0 +1,45 @@
+services:
+  oracle-db1:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle-db1
+    environment:
+      ORACLE_PASSWORD: admin
+      APP_USER: admin
+      APP_USER_PASSWORD: admin
+    ports:
+      - '1521:1521'
+    networks:
+      - oracle-network
+    volumes:
+      - ./oracle-db1:/opt/oracle/oradata
+
+  oracle-db2:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle-db2
+    environment:
+      ORACLE_PASSWORD: admin
+      APP_USER: admin
+      APP_USER_PASSWORD: admin
+    ports:
+      - '1522:1521'
+    networks:
+      - oracle-network
+    volumes:
+      - ./oracle-db2:/opt/oracle/oradata
+
+  # Aquí puedes descomentar y ajustar la configuración de tu API si la necesitas
+  # api:
+  #   build:
+  #     context: .  # Ruta donde se encuentra tu Dockerfile de la API
+  #   container_name: my-api
+  #   ports:
+  #     - '8085:8080'  # Cambia el puerto según el que exponga tu aplicación NestJS
+  #   depends_on:
+  #     - oracle-db1
+  #     - oracle-db2
+  #   networks:
+  #     - oracle-network
+
+networks:
+  oracle-network:
+    driver: bridge
